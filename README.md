@@ -155,8 +155,8 @@ Contributions welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guideli
 
 ## 📞 Support
 
-- **Issues:** [GitHub Issues](https://github.com/milanese-org/synology-activebackup-api/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/milanese-org/synology-activebackup-api/discussions)
+- **Issues:** [GitHub Issues](https://github.com/pmilano1/synology-activebackup-api/issues)
+- **Discussions:** [GitHub Discussions](https://github.com/pmilano1/synology-activebackup-api/discussions)
 
 ---
 

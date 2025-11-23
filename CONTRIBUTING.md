@@ -8,7 +8,7 @@ Thank you for your interest in contributing! This documentation is community-dri
 
 Found an error or have a suggestion?
 
-1. Check if the issue already exists in [GitHub Issues](https://github.com/milanese-org/synology-activebackup-api/issues)
+1. Check if the issue already exists in [GitHub Issues](https://github.com/pmilano1/synology-activebackup-api/issues)
 2. If not, create a new issue with:
    - Clear title and description
    - Steps to reproduce (if applicable)
@@ -96,7 +96,7 @@ Each API method should include:
 
 ## Questions?
 
-- Open a [GitHub Discussion](https://github.com/milanese-org/synology-activebackup-api/discussions)
+- Open a [GitHub Discussion](https://github.com/pmilano1/synology-activebackup-api/discussions)
 - Check existing documentation
 - Review closed issues for similar questions
 
