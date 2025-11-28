@@ -1,25 +1,28 @@
-# FileStation - Info & Listing APIs
+# FileStation - Info & Listing
+
+**Category:** File Management
 
 [← Back to FileStation](README.md)
 
 ---
 
+**Endpoint:** `/webapi/entry.cgi`
+
+---
+
 ## SYNO.FileStation.Info
 
-Get FileStation information and supported features.
+#### Method: `get`
 
-**API:** `SYNO.FileStation.Info`  
-**Version:** 2  
-**Method:** `get`
+**HTTP Method:** GET
 
-### Request
+**Parameters:**
+- `api` (required): `SYNO.FileStation.Info`
+- `version` (required): `2`
+- `method` (required): `get`
+- `_sid` (required): Session ID
 
-```http
-GET /webapi/entry.cgi?api=SYNO.FileStation.Info&version=2&method=get&_sid={sid}
-```
-
-### Response
-
+**Response:**
 ```json
 {
   "success": true,
@@ -39,35 +42,37 @@ GET /webapi/entry.cgi?api=SYNO.FileStation.Info&version=2&method=get&_sid={sid}
 }
 ```
 
+**Response Fields:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `is_manager` | boolean | User has manager privileges |
+| `support_virtual_protocol` | array | Supported virtual protocols |
+| `support_sharing` | boolean | Sharing feature supported |
+| `hostname` | string | NAS hostname |
+| `enable_list_usergrp` | boolean | Can list users/groups |
+
 ---
 
-## SYNO.FileStation.List - List Shares
+## SYNO.FileStation.List
 
-List all shared folders accessible to the current user.
+#### Method: `list_share`
 
-**API:** `SYNO.FileStation.List`  
-**Version:** 2  
-**Method:** `list_share`
+**HTTP Method:** GET
 
-### Request Parameters
+**Parameters:**
+- `api` (required): `SYNO.FileStation.List`
+- `version` (required): `2`
+- `method` (required): `list_share`
+- `_sid` (required): Session ID
+- `offset` (optional): Starting index (default: 0)
+- `limit` (optional): Max results (default: 0 = all)
+- `sort_by` (optional): Sort field: `name`, `user`, `group`, `mtime`, `atime`, `ctime`, `crtime`, `posix`
+- `sort_direction` (optional): `asc` or `desc`
+- `onlywritable` (optional): Only writable shares
+- `additional` (optional): Additional fields: `real_path`, `owner`, `time`, `perm`, `mount_point_type`, `volume_status`
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `offset` | Integer | No | Starting index (default: 0) |
-| `limit` | Integer | No | Max results (default: 0 = all) |
-| `sort_by` | String | No | Sort field: `name`, `user`, `group`, `mtime`, `atime`, `ctime`, `crtime`, `posix` |
-| `sort_direction` | String | No | `asc` or `desc` (default: `asc`) |
-| `onlywritable` | Boolean | No | Only show writable shares |
-| `additional` | String/Array | No | Additional info: `real_path`, `owner`, `time`, `perm`, `mount_point_type`, `volume_status` |
-
-### Request
-
-```http
-GET /webapi/entry.cgi?api=SYNO.FileStation.List&version=2&method=list_share&_sid={sid}
-```
-
-### Response
-
+**Response:**
 ```json
 {
   "success": true,
@@ -111,38 +116,39 @@ GET /webapi/entry.cgi?api=SYNO.FileStation.List&version=2&method=list_share&_sid
 }
 ```
 
+**Response Fields:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `total` | integer | Total number of shares |
+| `offset` | integer | Current offset |
+| `shares` | array | Array of share objects |
+| `path` | string | Share path |
+| `name` | string | Share name |
+| `isdir` | boolean | Is directory |
+
 ---
 
-## SYNO.FileStation.List - List Files
+#### Method: `list`
 
-List files and folders in a directory.
+**HTTP Method:** GET
 
-**API:** `SYNO.FileStation.List`  
-**Version:** 2  
-**Method:** `list`
+**Parameters:**
+- `api` (required): `SYNO.FileStation.List`
+- `version` (required): `2`
+- `method` (required): `list`
+- `folder_path` (required): Folder path
+- `_sid` (required): Session ID
+- `offset` (optional): Starting index
+- `limit` (optional): Max results
+- `sort_by` (optional): Sort field: `name`, `size`, `user`, `group`, `mtime`, `atime`, `ctime`, `crtime`, `posix`, `type`
+- `sort_direction` (optional): `asc` or `desc`
+- `pattern` (optional): File name pattern
+- `filetype` (optional): `file`, `dir`, `all`
+- `goto_path` (optional): Jump to specific path
+- `additional` (optional): Additional fields: `real_path`, `size`, `owner`, `time`, `perm`, `mount_point_type`, `type`
 
-### Request Parameters
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `folder_path` | String | Yes | Path to folder |
-| `offset` | Integer | No | Starting index (default: 0) |
-| `limit` | Integer | No | Max results (default: 0 = all) |
-| `sort_by` | String | No | Sort field: `name`, `size`, `user`, `group`, `mtime`, `atime`, `ctime`, `crtime`, `posix`, `type` |
-| `sort_direction` | String | No | `asc` or `desc` (default: `asc`) |
-| `pattern` | String | No | File name pattern (supports wildcards) |
-| `filetype` | String | No | Filter by type: `file`, `dir`, `all` (default: `all`) |
-| `goto_path` | String | No | Jump to specific file path |
-| `additional` | String/Array | No | Additional info: `real_path`, `size`, `owner`, `time`, `perm`, `mount_point_type`, `type` |
-
-### Request
-
-```http
-GET /webapi/entry.cgi?api=SYNO.FileStation.List&version=2&method=list&folder_path=/docker&_sid={sid}
-```
-
-### Response
-
+**Response:**
 ```json
 {
   "success": true,
@@ -163,15 +169,6 @@ GET /webapi/entry.cgi?api=SYNO.FileStation.List&version=2&method=list&folder_pat
             "crtime": 1732752000
           }
         }
-      },
-      {
-        "path": "/docker/README.md",
-        "name": "README.md",
-        "isdir": false,
-        "additional": {
-          "size": 2048,
-          "type": "text/markdown"
-        }
       }
     ]
   }
@@ -180,38 +177,19 @@ GET /webapi/entry.cgi?api=SYNO.FileStation.List&version=2&method=list&folder_pat
 
 ---
 
-## SYNO.FileStation.List - Get File Info
+#### Method: `getinfo`
 
-Get detailed information about specific files or folders.
+**HTTP Method:** GET/POST
 
-**API:** `SYNO.FileStation.List`  
-**Version:** 2  
-**Method:** `getinfo`
+**Parameters:**
+- `api` (required): `SYNO.FileStation.List`
+- `version` (required): `2`
+- `method` (required): `getinfo`
+- `path` (required): File/folder path (JSON array for multiple)
+- `_sid` (required): Session ID
+- `additional` (optional): Additional fields
 
-### Request Parameters
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `path` | String/Array | Yes | File/folder path(s) - JSON array for multiple |
-| `additional` | String/Array | No | Additional info: `real_path`, `size`, `owner`, `time`, `perm`, `mount_point_type`, `type` |
-
-### Request (Single File)
-
-```http
-GET /webapi/entry.cgi?api=SYNO.FileStation.List&version=2&method=getinfo&path=/docker/README.md&additional=size,time&_sid={sid}
-```
-
-### Request (Multiple Files)
-
-```http
-POST /webapi/entry.cgi
-Content-Type: application/x-www-form-urlencoded
-
-api=SYNO.FileStation.List&version=2&method=getinfo&path=["/docker/file1.txt","/docker/file2.txt"]&_sid={sid}
-```
-
-### Response
-
+**Response:**
 ```json
 {
   "success": true,

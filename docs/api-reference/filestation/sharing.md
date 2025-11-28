@@ -1,31 +1,29 @@
-# FileStation - Sharing APIs
+# FileStation - Sharing
+
+**Category:** File Management
 
 [← Back to FileStation](README.md)
 
 ---
 
-## SYNO.FileStation.Sharing - Get Link Info
+**Endpoint:** `/webapi/entry.cgi`
 
-Get information about a specific shared link.
+---
 
-**API:** `SYNO.FileStation.Sharing`  
-**Version:** 3  
-**Method:** `getinfo`
+## SYNO.FileStation.Sharing
 
-### Request Parameters
+#### Method: `getinfo`
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `id` | String | Yes | Shared link ID |
+**HTTP Method:** GET
 
-### Request
+**Parameters:**
+- `api` (required): `SYNO.FileStation.Sharing`
+- `version` (required): `3`
+- `method` (required): `getinfo`
+- `id` (required): Shared link ID
+- `_sid` (required): Session ID
 
-```http
-GET /webapi/entry.cgi?api=SYNO.FileStation.Sharing&version=3&method=getinfo&id=SHARE_LINK_ID&_sid={sid}
-```
-
-### Response
-
+**Response:**
 ```json
 {
   "success": true,
@@ -51,32 +49,22 @@ GET /webapi/entry.cgi?api=SYNO.FileStation.Sharing&version=3&method=getinfo&id=S
 
 ---
 
-## SYNO.FileStation.Sharing - List Links
+#### Method: `list`
 
-List all shared links created by the current user.
+**HTTP Method:** GET
 
-**API:** `SYNO.FileStation.Sharing`  
-**Version:** 3  
-**Method:** `list`
+**Parameters:**
+- `api` (required): `SYNO.FileStation.Sharing`
+- `version` (required): `3`
+- `method` (required): `list`
+- `_sid` (required): Session ID
+- `offset` (optional): Starting index
+- `limit` (optional): Max results
+- `sort_by` (optional): Sort field: `name`, `user`, `access_time`, `mtime`, `expire_time`, `status`
+- `sort_direction` (optional): `asc` or `desc`
+- `force_clean` (optional): Clean invalid links first (default: false)
 
-### Request Parameters
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `offset` | Integer | No | Starting index (default: 0) |
-| `limit` | Integer | No | Max results (default: 0 = all) |
-| `sort_by` | String | No | Sort field: `name`, `user`, `access_time`, `mtime`, `expire_time`, `status` |
-| `sort_direction` | String | No | `asc` or `desc` (default: `asc`) |
-| `force_clean` | Boolean | No | Clean invalid links before listing (default: false) |
-
-### Request
-
-```http
-GET /webapi/entry.cgi?api=SYNO.FileStation.Sharing&version=3&method=list&_sid={sid}
-```
-
-### Response
-
+**Response:**
 ```json
 {
   "success": true,
@@ -90,22 +78,10 @@ GET /webapi/entry.cgi?api=SYNO.FileStation.Sharing&version=3&method=list&_sid={s
         "link_owner": "admin",
         "path": "/docker/README.md",
         "date_expired": 0,
-        "date_available": 0,
         "status": "valid",
         "has_password": false,
-        "expire_times": 0,
         "access_time": 12,
         "isFolder": false
-      },
-      {
-        "id": "LINK_002",
-        "url": "https://nas.example.com/sharing/LINK_002",
-        "link_owner": "admin",
-        "path": "/photos/vacation",
-        "date_expired": 1735689600,
-        "status": "valid",
-        "has_password": true,
-        "isFolder": true
       }
     ]
   }
@@ -114,44 +90,22 @@ GET /webapi/entry.cgi?api=SYNO.FileStation.Sharing&version=3&method=list&_sid={s
 
 ---
 
-## SYNO.FileStation.Sharing - Create Link
+#### Method: `create`
 
-Create a new shared link for a file or folder.
+**HTTP Method:** POST
 
-**API:** `SYNO.FileStation.Sharing`  
-**Version:** 3  
-**Method:** `create`
+**Parameters:**
+- `api` (required): `SYNO.FileStation.Sharing`
+- `version` (required): `3`
+- `method` (required): `create`
+- `path` (required): File/folder path to share
+- `_sid` (required): Session ID
+- `password` (optional): Password protection
+- `date_expired` (optional): Expiration date (Unix timestamp, 0 = never)
+- `date_available` (optional): Available from date (Unix timestamp, 0 = immediate)
+- `expire_times` (optional): Max accesses (0 = unlimited)
 
-### Request Parameters
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `path` | String | Yes | File or folder path to share |
-| `password` | String | No | Password protection for the link |
-| `date_expired` | Integer/String | No | Expiration date (Unix timestamp or `0` for never) |
-| `date_available` | Integer/String | No | Available from date (Unix timestamp or `0` for immediate) |
-| `expire_times` | Integer | No | Max number of accesses (0 = unlimited) |
-
-### Request
-
-```http
-POST /webapi/entry.cgi
-Content-Type: application/x-www-form-urlencoded
-
-api=SYNO.FileStation.Sharing&version=3&method=create&path=/docker/document.pdf&_sid={sid}
-```
-
-### Request (With Password and Expiration)
-
-```http
-POST /webapi/entry.cgi
-Content-Type: application/x-www-form-urlencoded
-
-api=SYNO.FileStation.Sharing&version=3&method=create&path=/docker/document.pdf&password=SecurePass123&date_expired=1735689600&expire_times=10&_sid={sid}
-```
-
-### Response
-
+**Response:**
 ```json
 {
   "success": true,
@@ -163,11 +117,9 @@ api=SYNO.FileStation.Sharing&version=3&method=create&path=/docker/document.pdf&p
         "link_owner": "admin",
         "path": "/docker/document.pdf",
         "date_expired": 1735689600,
-        "date_available": 0,
         "status": "valid",
         "has_password": true,
         "expire_times": 10,
-        "access_time": 0,
         "isFolder": false
       }
     ]
@@ -177,40 +129,18 @@ api=SYNO.FileStation.Sharing&version=3&method=create&path=/docker/document.pdf&p
 
 ---
 
-## SYNO.FileStation.Sharing - Delete Link
+#### Method: `delete`
 
-Delete one or more shared links.
+**HTTP Method:** POST
 
-**API:** `SYNO.FileStation.Sharing`  
-**Version:** 3  
-**Method:** `delete`
+**Parameters:**
+- `api` (required): `SYNO.FileStation.Sharing`
+- `version` (required): `3`
+- `method` (required): `delete`
+- `id` (required): Link ID (comma-separated for multiple)
+- `_sid` (required): Session ID
 
-### Request Parameters
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `id` | String | Yes | Shared link ID (comma-separated for multiple) |
-
-### Request (Single Link)
-
-```http
-POST /webapi/entry.cgi
-Content-Type: application/x-www-form-urlencoded
-
-api=SYNO.FileStation.Sharing&version=3&method=delete&id=LINK_ID&_sid={sid}
-```
-
-### Request (Multiple Links)
-
-```http
-POST /webapi/entry.cgi
-Content-Type: application/x-www-form-urlencoded
-
-api=SYNO.FileStation.Sharing&version=3&method=delete&id=LINK_001,LINK_002,LINK_003&_sid={sid}
-```
-
-### Response
-
+**Response:**
 ```json
 {
   "success": true
@@ -219,25 +149,17 @@ api=SYNO.FileStation.Sharing&version=3&method=delete&id=LINK_001,LINK_002,LINK_0
 
 ---
 
-## SYNO.FileStation.Sharing - Clear Invalid Links
+#### Method: `clear_invalid`
 
-Remove all invalid or expired shared links.
+**HTTP Method:** POST
 
-**API:** `SYNO.FileStation.Sharing`  
-**Version:** 3  
-**Method:** `clear_invalid`
+**Parameters:**
+- `api` (required): `SYNO.FileStation.Sharing`
+- `version` (required): `3`
+- `method` (required): `clear_invalid`
+- `_sid` (required): Session ID
 
-### Request
-
-```http
-POST /webapi/entry.cgi
-Content-Type: application/x-www-form-urlencoded
-
-api=SYNO.FileStation.Sharing&version=3&method=clear_invalid&_sid={sid}
-```
-
-### Response
-
+**Response:**
 ```json
 {
   "success": true
@@ -246,35 +168,22 @@ api=SYNO.FileStation.Sharing&version=3&method=clear_invalid&_sid={sid}
 
 ---
 
-## SYNO.FileStation.Sharing - Edit Link
+#### Method: `edit`
 
-Edit an existing shared link's properties.
+**HTTP Method:** POST
 
-**API:** `SYNO.FileStation.Sharing`  
-**Version:** 3  
-**Method:** `edit`
+**Parameters:**
+- `api` (required): `SYNO.FileStation.Sharing`
+- `version` (required): `3`
+- `method` (required): `edit`
+- `id` (required): Link ID
+- `_sid` (required): Session ID
+- `password` (optional): New password (empty to remove)
+- `date_expired` (optional): New expiration date
+- `date_available` (optional): New available from date
+- `expire_times` (optional): New max accesses
 
-### Request Parameters
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `id` | String | Yes | Shared link ID |
-| `password` | String | No | New password (empty string to remove) |
-| `date_expired` | Integer/String | No | New expiration date (Unix timestamp or `0` for never) |
-| `date_available` | Integer/String | No | New available from date |
-| `expire_times` | Integer | No | New max accesses (0 = unlimited) |
-
-### Request
-
-```http
-POST /webapi/entry.cgi
-Content-Type: application/x-www-form-urlencoded
-
-api=SYNO.FileStation.Sharing&version=3&method=edit&id=LINK_ID&password=NewPassword&date_expired=1767225600&_sid={sid}
-```
-
-### Response
-
+**Response:**
 ```json
 {
   "success": true,

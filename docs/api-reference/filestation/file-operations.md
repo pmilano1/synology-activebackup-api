@@ -1,46 +1,32 @@
-# FileStation - File Operations APIs
+# FileStation - File Operations
+
+**Category:** File Management
 
 [← Back to FileStation](README.md)
 
 ---
 
+**Endpoint:** `/webapi/entry.cgi`
+
+---
+
 ## SYNO.FileStation.CreateFolder
 
-Create one or more folders.
+#### Method: `create`
 
-**API:** `SYNO.FileStation.CreateFolder`  
-**Version:** 2  
-**Method:** `create`
+**HTTP Method:** POST
 
-### Request Parameters
+**Parameters:**
+- `api` (required): `SYNO.FileStation.CreateFolder`
+- `version` (required): `2`
+- `method` (required): `create`
+- `folder_path` (required): Parent folder path (JSON array for multiple)
+- `name` (required): Folder name (JSON array for multiple)
+- `_sid` (required): Session ID
+- `force_parent` (optional): Create parent folders (default: false)
+- `additional` (optional): Additional fields
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `folder_path` | String/Array | Yes | Parent folder path(s) - JSON array for multiple |
-| `name` | String/Array | Yes | Folder name(s) - JSON array for multiple |
-| `force_parent` | Boolean | No | Create parent folders if they don't exist (default: false) |
-| `additional` | String/Array | No | Additional info to return: `real_path`, `size`, `owner`, `time`, `perm` |
-
-### Request (Single Folder)
-
-```http
-POST /webapi/entry.cgi
-Content-Type: application/x-www-form-urlencoded
-
-api=SYNO.FileStation.CreateFolder&version=2&method=create&folder_path=/docker&name=new_folder&_sid={sid}
-```
-
-### Request (Multiple Folders)
-
-```http
-POST /webapi/entry.cgi
-Content-Type: application/x-www-form-urlencoded
-
-api=SYNO.FileStation.CreateFolder&version=2&method=create&folder_path=["/docker","/docker"]&name=["folder1","folder2"]&_sid={sid}
-```
-
-### Response
-
+**Response:**
 ```json
 {
   "success": true,
@@ -60,32 +46,21 @@ api=SYNO.FileStation.CreateFolder&version=2&method=create&folder_path=["/docker"
 
 ## SYNO.FileStation.Rename
 
-Rename files or folders.
+#### Method: `rename`
 
-**API:** `SYNO.FileStation.Rename`  
-**Version:** 2  
-**Method:** `rename`
+**HTTP Method:** POST
 
-### Request Parameters
+**Parameters:**
+- `api` (required): `SYNO.FileStation.Rename`
+- `version` (required): `2`
+- `method` (required): `rename`
+- `path` (required): File/folder path (JSON array for multiple)
+- `name` (required): New name (JSON array for multiple)
+- `_sid` (required): Session ID
+- `additional` (optional): Additional fields
+- `search_taskid` (optional): Search task ID
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `path` | String/Array | Yes | File/folder path(s) to rename - JSON array for multiple |
-| `name` | String/Array | Yes | New name(s) - JSON array for multiple |
-| `additional` | String/Array | No | Additional info to return |
-| `search_taskid` | String | No | Search task ID if renaming from search results |
-
-### Request
-
-```http
-POST /webapi/entry.cgi
-Content-Type: application/x-www-form-urlencoded
-
-api=SYNO.FileStation.Rename&version=2&method=rename&path=/docker/old_name.txt&name=new_name.txt&_sid={sid}
-```
-
-### Response
-
+**Response:**
 ```json
 {
   "success": true,
@@ -103,45 +78,25 @@ api=SYNO.FileStation.Rename&version=2&method=rename&path=/docker/old_name.txt&na
 
 ---
 
-## SYNO.FileStation.CopyMove - Start Copy/Move
+## SYNO.FileStation.CopyMove
 
-Start a copy or move operation (asynchronous for large operations).
+#### Method: `start`
 
-**API:** `SYNO.FileStation.CopyMove`  
-**Version:** 3  
-**Method:** `start`
+**HTTP Method:** POST
 
-### Request Parameters
+**Parameters:**
+- `api` (required): `SYNO.FileStation.CopyMove`
+- `version` (required): `3`
+- `method` (required): `start`
+- `path` (required): Source path (JSON array for multiple)
+- `dest_folder_path` (required): Destination folder
+- `_sid` (required): Session ID
+- `overwrite` (optional): Overwrite existing (default: false)
+- `remove_src` (optional): Move instead of copy (default: false)
+- `accurate_progress` (optional): Accurate progress (default: false)
+- `search_taskid` (optional): Search task ID
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `path` | String/Array | Yes | Source file/folder path(s) - JSON array for multiple |
-| `dest_folder_path` | String | Yes | Destination folder path |
-| `overwrite` | Boolean | No | Overwrite existing files (default: false) |
-| `remove_src` | Boolean | No | Remove source after copy (move operation) (default: false) |
-| `accurate_progress` | Boolean | No | Calculate accurate progress (slower) (default: false) |
-| `search_taskid` | String | No | Search task ID if copying from search results |
-
-### Request (Copy)
-
-```http
-POST /webapi/entry.cgi
-Content-Type: application/x-www-form-urlencoded
-
-api=SYNO.FileStation.CopyMove&version=3&method=start&path=/docker/file.txt&dest_folder_path=/backup&overwrite=true&_sid={sid}
-```
-
-### Request (Move)
-
-```http
-POST /webapi/entry.cgi
-Content-Type: application/x-www-form-urlencoded
-
-api=SYNO.FileStation.CopyMove&version=3&method=start&path=/docker/file.txt&dest_folder_path=/archive&remove_src=true&_sid={sid}
-```
-
-### Response
-
+**Response:**
 ```json
 {
   "success": true,
@@ -153,28 +108,18 @@ api=SYNO.FileStation.CopyMove&version=3&method=start&path=/docker/file.txt&dest_
 
 ---
 
-## SYNO.FileStation.CopyMove - Get Status
+#### Method: `status`
 
-Check the status of a copy/move operation.
+**HTTP Method:** GET
 
-**API:** `SYNO.FileStation.CopyMove`  
-**Version:** 3  
-**Method:** `status`
+**Parameters:**
+- `api` (required): `SYNO.FileStation.CopyMove`
+- `version` (required): `3`
+- `method` (required): `status`
+- `taskid` (required): Task ID
+- `_sid` (required): Session ID
 
-### Request Parameters
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `taskid` | String | Yes | Task ID from start operation |
-
-### Request
-
-```http
-GET /webapi/entry.cgi?api=SYNO.FileStation.CopyMove&version=3&method=status&taskid=FileStation_CopyMove_12345&_sid={sid}
-```
-
-### Response
-
+**Response:**
 ```json
 {
   "success": true,
@@ -190,25 +135,18 @@ GET /webapi/entry.cgi?api=SYNO.FileStation.CopyMove&version=3&method=status&task
 
 ---
 
-## SYNO.FileStation.CopyMove - Stop
+#### Method: `stop`
 
-Stop a running copy/move operation.
+**HTTP Method:** POST
 
-**API:** `SYNO.FileStation.CopyMove`  
-**Version:** 3  
-**Method:** `stop`
+**Parameters:**
+- `api` (required): `SYNO.FileStation.CopyMove`
+- `version` (required): `3`
+- `method` (required): `stop`
+- `taskid` (required): Task ID
+- `_sid` (required): Session ID
 
-### Request
-
-```http
-POST /webapi/entry.cgi
-Content-Type: application/x-www-form-urlencoded
-
-api=SYNO.FileStation.CopyMove&version=3&method=stop&taskid=FileStation_CopyMove_12345&_sid={sid}
-```
-
-### Response
-
+**Response:**
 ```json
 {
   "success": true
@@ -217,34 +155,23 @@ api=SYNO.FileStation.CopyMove&version=3&method=stop&taskid=FileStation_CopyMove_
 
 ---
 
-## SYNO.FileStation.Delete - Start Delete
+## SYNO.FileStation.Delete
 
-Start a delete operation (asynchronous for large operations).
+#### Method: `start`
 
-**API:** `SYNO.FileStation.Delete`  
-**Version:** 2  
-**Method:** `start`
+**HTTP Method:** POST
 
-### Request Parameters
+**Parameters:**
+- `api` (required): `SYNO.FileStation.Delete`
+- `version` (required): `2`
+- `method` (required): `start`
+- `path` (required): File/folder path (JSON array for multiple)
+- `_sid` (required): Session ID
+- `accurate_progress` (optional): Accurate progress (default: false)
+- `recursive` (optional): Delete recursively (default: true)
+- `search_taskid` (optional): Search task ID
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `path` | String/Array | Yes | File/folder path(s) to delete - JSON array for multiple |
-| `accurate_progress` | Boolean | No | Calculate accurate progress (default: false) |
-| `recursive` | Boolean | No | Delete folders recursively (default: true) |
-| `search_taskid` | String | No | Search task ID if deleting from search results |
-
-### Request
-
-```http
-POST /webapi/entry.cgi
-Content-Type: application/x-www-form-urlencoded
-
-api=SYNO.FileStation.Delete&version=2&method=start&path=["/docker/temp1.txt","/docker/temp2.txt"]&_sid={sid}
-```
-
-### Response
-
+**Response:**
 ```json
 {
   "success": true,
@@ -256,22 +183,18 @@ api=SYNO.FileStation.Delete&version=2&method=start&path=["/docker/temp1.txt","/d
 
 ---
 
-## SYNO.FileStation.Delete - Get Status
+#### Method: `status`
 
-Check the status of a delete operation.
+**HTTP Method:** GET
 
-**API:** `SYNO.FileStation.Delete`  
-**Version:** 2  
-**Method:** `status`
+**Parameters:**
+- `api` (required): `SYNO.FileStation.Delete`
+- `version` (required): `2`
+- `method` (required): `status`
+- `taskid` (required): Task ID
+- `_sid` (required): Session ID
 
-### Request
-
-```http
-GET /webapi/entry.cgi?api=SYNO.FileStation.Delete&version=2&method=status&taskid=FileStation_Delete_12345&_sid={sid}
-```
-
-### Response
-
+**Response:**
 ```json
 {
   "success": true,
@@ -286,25 +209,18 @@ GET /webapi/entry.cgi?api=SYNO.FileStation.Delete&version=2&method=status&taskid
 
 ---
 
-## SYNO.FileStation.Delete - Stop
+#### Method: `stop`
 
-Stop a running delete operation.
+**HTTP Method:** POST
 
-**API:** `SYNO.FileStation.Delete`  
-**Version:** 2  
-**Method:** `stop`
+**Parameters:**
+- `api` (required): `SYNO.FileStation.Delete`
+- `version` (required): `2`
+- `method` (required): `stop`
+- `taskid` (required): Task ID
+- `_sid` (required): Session ID
 
-### Request
-
-```http
-POST /webapi/entry.cgi
-Content-Type: application/x-www-form-urlencoded
-
-api=SYNO.FileStation.Delete&version=2&method=stop&taskid=FileStation_Delete_12345&_sid={sid}
-```
-
-### Response
-
+**Response:**
 ```json
 {
   "success": true
