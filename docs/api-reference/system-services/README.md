@@ -23,6 +23,9 @@ System Services APIs provide access to various DSM system services including DHC
 | **[DHCP Server](dhcp-server.md)** | DHCP server configuration, client list, reservations |
 | **[Log Center](log-center.md)** | System logs, remote logging, log archives |
 | **[Security Advisor](security-advisor.md)** | Security scans, checklist, login activity |
+| **[Universal Search](universal-search.md)** | Search across files and metadata |
+| **[Note Station](note-station.md)** | Notebooks, notes, tags, todos |
+| **[USB Copy](usb-copy.md)** | USB copy task management and logs |
 
 ---
 
