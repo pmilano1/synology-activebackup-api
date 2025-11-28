@@ -183,6 +183,15 @@ System logs, remote logging, log archives
 ### [Security Advisor](system-services/security-advisor.md)
 Security scans, checklist, login activity
 
+### [Universal Search](system-services/universal-search.md)
+Search across files and metadata
+
+### [Note Station](system-services/note-station.md)
+Notebooks, notes, tags, todos
+
+### [USB Copy](system-services/usb-copy.md)
+USB copy task management and logs
+
 ---
 
 ## ActiveBackup for Business APIs
